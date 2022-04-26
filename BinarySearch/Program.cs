@@ -6,10 +6,10 @@ namespace BinarySearch
     {
         static void Main(string[] args)
         {
-            var tmp = new int[2] {1, 3};
+            var tmp = new [] {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1};
             //var t = Search(tmp, 0);
 
-            var t = SearchRotatedArray(tmp, 3);
+            var t = SearchRotatedArrayWithReplyNumbers(tmp, 2);
 
             //var tmp2 = GuessNumber(2126753390);
 
@@ -202,6 +202,69 @@ namespace BinarySearch
             }
 
             return -1;
+        }
+
+        //https://leetcode.com/problems/search-in-rotated-sorted-array-ii/submissions/
+        //Недоделка
+        public static bool SearchRotatedArrayWithReplyNumbers(int[] nums, int target)
+        {
+            int leftIndex = 0;
+            int rightIndex = nums.Length - 1;
+
+            while (leftIndex <= rightIndex)
+            {
+                int middleIndex = (rightIndex + leftIndex) / 2;
+                var valueByMiddleIndex = nums[middleIndex];
+
+                if (valueByMiddleIndex == target)
+                {
+                    return true;
+                }
+
+
+                if (nums[leftIndex] <= valueByMiddleIndex)
+                {
+                    if (nums[leftIndex] == valueByMiddleIndex)
+                    {
+                        if(leftIndex == middleIndex) break;
+
+                        for (int i = 0; i < middleIndex; i++)
+                        {
+                            if (nums[i] == target)
+                            {
+                                return true;
+                            }
+                        }
+
+                        leftIndex = middleIndex + 1;
+                        
+                    }
+                    else
+                    {
+                        if (nums[leftIndex] <= target && valueByMiddleIndex > target)
+                        {
+                            rightIndex = middleIndex;
+                        }
+                        else
+                        {
+                            leftIndex = middleIndex + 1;
+                        }
+                    }
+                }
+                else
+                {
+                    if (nums[rightIndex] >= target && valueByMiddleIndex < target)
+                    {
+                        leftIndex = middleIndex + 1;
+                    }
+                    else
+                    {
+                        rightIndex = middleIndex;
+                    }
+                }
+            }
+
+            return false;
         }
     }
 }
