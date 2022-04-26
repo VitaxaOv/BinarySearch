@@ -6,13 +6,15 @@ namespace BinarySearch
     {
         static void Main(string[] args)
         {
-            var tmp = new int[6] {-1, 0, 0, 5, 9, 12};
+            var tmp = new int[2] {1, 3};
             //var t = Search(tmp, 0);
 
-            var tmp2 = GuessNumber(2126753390);
+            var t = SearchRotatedArray(tmp, 3);
 
-            Console.WriteLine(tmp2);
-            //Console.WriteLine(t);
+            //var tmp2 = GuessNumber(2126753390);
+
+            //Console.WriteLine(tmp2);
+            Console.WriteLine(t);
         }
 
         //https://leetcode.com/problems/binary-search/submissions/
@@ -157,6 +159,49 @@ namespace BinarySearch
             }
 
             return false;
+        }
+
+        //https://leetcode.com/problems/search-in-rotated-sorted-array/submissions/
+        public static int SearchRotatedArray(int[] nums, int target)
+        {
+            int leftIndex = 0;
+            int rightIndex = nums.Length-1;
+
+            while (leftIndex <= rightIndex)
+            {
+                int middleIndex = (rightIndex + leftIndex) / 2;
+                var valueByMiddleIndex = nums[middleIndex];
+
+                if (valueByMiddleIndex == target)
+                {
+                    return middleIndex;
+                }
+
+                if (nums[leftIndex] <= valueByMiddleIndex)
+                {
+                    if (nums[leftIndex] <= target && valueByMiddleIndex > target)
+                    {
+                        rightIndex = middleIndex;
+                    }
+                    else
+                    {
+                        leftIndex = middleIndex + 1;
+                    }
+                }
+                else
+                {
+                    if (nums[rightIndex] >= target && valueByMiddleIndex < target)
+                    {
+                        leftIndex = middleIndex + 1;
+                    }
+                    else
+                    {
+                        rightIndex = middleIndex;
+                    }
+                }
+            }
+
+            return -1;
         }
     }
 }
